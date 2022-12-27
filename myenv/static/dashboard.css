@@ -1,0 +1,12 @@
+.make_game_form {
+    display: inline-block;
+}
+.user_owned_game {
+    color:darkcyan;
+}
+.True {
+    color:greenyellow;
+}
+.False {
+    color: red;
+}

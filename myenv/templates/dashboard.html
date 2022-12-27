@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='dashboard.css')}}" }}>
+</head>
+<body>
+    <h1>Welcome {{current_user.username}}</h1>
+    <h2>Games</h2>
+    <br>
+    <form class="user_invites" action="/acceptordecline" method="POST">
+        {% for i in range(0,user_invite_package[1]) %}
+        <button type="submit" name="accept" class="user_invite" value="{{user_invite_package[0][i].id}}">Invite: {{user_invite_package[0][i].name}}    (Owner - {{user_invite_package[0][i].owner}})</button>
+        <button type="submit" name="decline" class="user_invite" value="{{user_invite_package[0][i].id}}">Decline</button>
+        <br>
+        {% endfor %}
+    </form>
+    <form class="user_owned_games" action="/switch" method="POST">
+        {% for i in range(0,user_owned_games_package[1]) %}
+        <button type="submit" name="button" class="user_owned_game" value="{{user_owned_games_package[0][i].id}}">{{user_owned_games_package[0][i].name}}    (Owner - You)</button>
+        <br>
+        {% endfor %}
+        {% for i in range(0,other_games_package[1]) %}
+        <button type="submit" name="button" class="other_game" value="{{other_games_package[0][i].id}}">{{other_games_package[0][i].name}} (Owner - {{other_games_package[0][i].owner}})</button>
+        {% endfor %}
+    </form>
+    <br>
+    <div>
+        <form class="make_game_form" method="POST">
+            {{make_game.hidden_tag()}}
+            {{make_game.name}}
+            <br>
+            {{make_game.description}}
+            <br>
+            {{make_game.submit}}
+        </form>
+    {% if loaded_game.is_active %}
+        <h2>Leaderboard</h2>
+            {% for i in range(0,leaderboard_package[1]) %}
+            <p>Player: {{leaderboard_package[0][i][1]}} Kills: {{leaderboard_package[0][i][0]}}</p>
+            {% endfor %}
+        {% if in_game %}
+            <h3>Status</h3>
+                <p>Your target is: {{target}}</p>
+                <form action="/eliminate">
+                    <button type="submit">I have eliminated my target</button>
+                </form>
+        {% else %}
+            <p>You have been eliminated</p>
+            <form action="/leave">
+                <button type="submit">Leave Game</button>
+            </form>
+        {% endif %}
+        
+    {% endif %}
+    {% if not loaded_game.is_active %}
+    <h3>{{loaded_game.name}} Roster</h3>
+        {% for i in range(0, leaderboard_package[1]) %}
+            <p class="player {{leaderboard_package[0][i][2]}}">{{leaderboard_package[0][i][1]}}</p>
+        {% endfor %}
+        {% if current_user.username == loaded_game.owner %}
+            <form class="invite_form" action="/invite" method="POST">
+                <input type="text" name="foreign_username" placeholder="Username">
+                <button type="submit" name="button">Invite User</button>
+            </form>
+            <form action="/start">
+                <button type="submit" name="start_game">Start Game</button>
+            </form>
+        {% endif %}
+    {% endif %}
+    </div> 
+    <br>
+    <a href="logout"><input type="button" value="Logout"></a>
+
+</body>
+</html>
