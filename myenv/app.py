@@ -154,7 +154,7 @@ def leave():
     curr_game = Game.query.filter_by(id=current_user.id).first()
     player_history = iq_string_to_list(curr_game.join_history)
     player_history.remove(str(current_user.id))
-    curr_game.join_history = player_history
+    curr_game.join_history = iq_list_to_string(player_history)
     curr_game_list = iq_string_to_list(current_user.games_in)
     curr_game_list.remove(str(current_user.loaded_game_id))
     if curr_game.owner == current_user.username:
@@ -162,8 +162,10 @@ def leave():
         for i in range(0,len(join_history)):
             user = User.query.filter_by(id=join_history[i]).first()
             in_game_list = iq_string_to_list(user.games_in)
-            in_game_list.remove(str(user.id))
+            in_game_list.remove(str(curr_game.id))
             user.games_in = iq_list_to_string(in_game_list)
+            if user.loaded_game_id == curr_game.id:
+                user.loaded_game_id = None
         db.session.delete(curr_game)
     current_user.games_in = iq_list_to_string(curr_game_list) 
     current_user.loaded_game_id = None
@@ -182,7 +184,7 @@ def accept_or_decline():
         current_user.games_in = iq_list_to_string(games_in_list)
         join_history = iq_string_to_list(curr_game.join_history)
         join_history.append(str(current_user.id))
-        curr_game.join_history = join_history
+        curr_game.join_history = iq_list_to_string(join_history)
         user_queue = iq_string_to_list(current_user.invite_queue)
         user_queue.remove(list(request.form.values())[0])
         current_user.invite_queue = iq_list_to_string(user_queue)

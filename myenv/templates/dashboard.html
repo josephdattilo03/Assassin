@@ -56,8 +56,8 @@
         {% endif %}
         
     {% endif %}
-    {% if not loaded_game.is_active %}
-    <h3>{{loaded_game.name}} Roster</h3>
+    {% if loaded_game and not loaded_game.is_active %}
+    <h3>{{loaded_game.name}}'s Roster</h3>
         {% for i in range(0, leaderboard_package[1]) %}
             <p class="player {{leaderboard_package[0][i][2]}}">{{leaderboard_package[0][i][1]}}</p>
         {% endfor %}

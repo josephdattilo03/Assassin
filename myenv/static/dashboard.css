@@ -1,3 +1,7 @@
+html{
+    font-family:"sans-serif";
+}
+
 .make_game_form {
     display: inline-block;
 }
