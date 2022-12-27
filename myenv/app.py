@@ -44,6 +44,7 @@ class Game(db.Model):
     players_and_kills = db.Column(db.String)
     description = db.Column(db.String)
     is_active = db.Column(db.Boolean, nullable=False)
+    join_history = db.Column(db.String(40))
     def __repr__(self):
         return "<Name %r" % self.id
         
@@ -101,7 +102,8 @@ def dashboard():
         if game:
             return redirect(url_for("dashboard"))
         else:
-            new_game = Game(name=make_game.name.data, owner=current_user.username, players_and_kills="0,"+current_user.username+",True", description=make_game.description.data, is_active=False)
+            new_game = Game(name=make_game.name.data, owner=current_user.username, players_and_kills="0,"+current_user.username+",True", 
+            description=make_game.description.data, is_active=False, join_history=str(current_user.id))
             db.session.add(new_game)
             db.session.commit()
             games_in_list = iq_string_to_list(current_user.games_in)
@@ -149,9 +151,21 @@ def invite():
 @app.route("/leave")
 @login_required
 def leave():
-    in_game_list = iq_string_to_list(current_user.games_in)
-    in_game_list.remove(str(current_user.loaded_game_id))
-    current_user.games_in = iq_list_to_string(in_game_list) 
+    curr_game = Game.query.filter_by(id=current_user.id).first()
+    player_history = iq_string_to_list(curr_game.join_history)
+    player_history.remove(str(current_user.id))
+    curr_game.join_history = player_history
+    curr_game_list = iq_string_to_list(current_user.games_in)
+    curr_game_list.remove(str(current_user.loaded_game_id))
+    if curr_game.owner == current_user.username:
+        join_history = iq_string_to_list(curr_game.join_history)
+        for i in range(0,len(join_history)):
+            user = User.query.filter_by(id=join_history[i]).first()
+            in_game_list = iq_string_to_list(user.games_in)
+            in_game_list.remove(str(user.id))
+            user.games_in = iq_list_to_string(in_game_list)
+        db.session.delete(curr_game)
+    current_user.games_in = iq_list_to_string(curr_game_list) 
     current_user.loaded_game_id = None
     db.session.commit()
     return redirect(url_for("dashboard"))
@@ -166,6 +180,9 @@ def accept_or_decline():
         games_in_list = iq_string_to_list(current_user.games_in)
         games_in_list.append(list(request.form.values())[0])
         current_user.games_in = iq_list_to_string(games_in_list)
+        join_history = iq_string_to_list(curr_game.join_history)
+        join_history.append(str(current_user.id))
+        curr_game.join_history = join_history
         user_queue = iq_string_to_list(current_user.invite_queue)
         user_queue.remove(list(request.form.values())[0])
         current_user.invite_queue = iq_list_to_string(user_queue)
@@ -226,15 +243,7 @@ def eliminate():
             break
     curr_game.players_and_kills = pak_list_to_string(pak_list)
     db.session.commit()
-    #check for game_over condition
-    if len(pak_list) <= 1:
-        return redirect(url_for("gameover"))
     return redirect(url_for("dashboard"))
-
-@app.route("/gameover")
-@login_required
-def gameover():
-    print("TODO")
 
 #Logs the user out of the service and returns them to the home screen
 @app.route("/logout")
