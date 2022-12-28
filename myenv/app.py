@@ -5,6 +5,7 @@ from flask_bcrypt import Bcrypt
 from forms import RegisterForm, LoginForm, GameForm
 from query import get_dashboard_data, get_target
 from dataprocessing import iq_list_to_string, iq_string_to_list, pak_list_to_string, pak_string_to_list
+from assassin_title import get_assassin_title
 from debug import print_game, print_user
 import random
 
@@ -56,7 +57,7 @@ with app.app_context():
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template("home.html")
+    return render_template("home.html", assassin_title = get_assassin_title())
 
 #Presents a form for a user to register for an account and inserts data into the database
 @app.route('/register', methods=["GET","POST"])
