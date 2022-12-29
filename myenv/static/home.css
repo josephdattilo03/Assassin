@@ -8,14 +8,44 @@ body{
     text-align: center;
 }
 input {
+    margin: 10px;
+    margin-bottom: -20px;
+    margin-top: 20px;
     border-radius: 20px / 20px;
     background-color: rgb(26,26,26);
     color: rgb(51,255,51);
     border-color: rgb(51,255,51);
+    opacity: 0;
+    animation: title_animation;
+    animation-fill-mode: forwards;
+    animation-duration: 1s;
+    animation-delay: 2.3s;
+    
 }
 input:hover {
+    opacity: 1;
     transition: .2s ease-in;
     animation: fade;
     background-color: rgb(51,255,51);
     color: rgb(26, 26, 26);
+}
+.home_title {
+    margin-top: 30px;
+    line-height: 0;
+    font-size: .7vw;
+}
+.title_line {
+    opacity: 0;
+    animation: title_animation;
+    animation-fill-mode: forwards;
+    animation-duration: .5s;
+}
+
+@keyframes title_animation{
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }

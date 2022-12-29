@@ -8,7 +8,11 @@
     <title>Assassin</title>
 </head>
 <body>
-    {{assassin_title}}
+    <div class="home_title">
+        {% for i in range(0,title1_package[1]) %}
+            <pre class="title_line" style="{{style1[i]}}">{{title1_package[0][i]}}</pre>
+        {% endfor %}
+    </div>
     <a href='login'><input type="button" value="Login"></a>
     <a href="register"><input type="button" value="Sign Up"></a>
 </body>
