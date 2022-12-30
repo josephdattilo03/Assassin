@@ -5,8 +5,7 @@ from flask_bcrypt import Bcrypt
 from forms import RegisterForm, LoginForm, GameForm
 from query import get_dashboard_data, get_target
 from dataprocessing import iq_list_to_string, iq_string_to_list, pak_list_to_string, pak_string_to_list
-from debug import print_game, print_user
-from home_screen_animate import get_title_animation
+from logo_animation import get_title_animation
 import random
 
 
@@ -77,11 +76,13 @@ def register():
                 errorMessage = "Either username already exists or that email is already associated with an account"
         else:
             errorMessage = "Passwords do not match"
-    return render_template("register.html", form=form, errorMessage=errorMessage)
+    title1,style1 = get_title_animation()
+    return render_template("register.html", form=form, errorMessage=errorMessage, title1_package=[title1,len(title1)], style1=style1)
 
 #Compares inputted data to database data and gives user access to the service
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    title1,style1 = get_title_animation()
     form1 = LoginForm()
     errorMessage = ""
     if form1.validate_on_submit():
@@ -91,7 +92,7 @@ def login():
             return redirect(url_for('dashboard'))
         else:
             errorMessage = "Email or password is incorrect"
-    return render_template('login.html',form1=form1,errorMessage=errorMessage)
+    return render_template('login.html',form1=form1,errorMessage=errorMessage, title1_package=[title1, len(title1)], style1=style1)
 
 #This is the main body of the application which presents frontend based on the user's interaction with the database
 @app.route("/dashboard", methods=["GET","POST"])
@@ -237,7 +238,6 @@ def eliminate():
     #Remove the player from the game in the database and from the client game list
     pak_list = pak_string_to_list(curr_game.players_and_kills)
     for i in range(0,len(pak_list)):
-        print(pak_list[i][1])
         if pak_list[i][1] == target:
             pak_list.pop(i)
             break

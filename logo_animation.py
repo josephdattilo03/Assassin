@@ -23,5 +23,4 @@ def get_title_animation():
     style = []
     for i in range(0,len(title)):
         style.append("animation-delay: " + str(i*100) + "ms;")
-    print(style)
     return title,style

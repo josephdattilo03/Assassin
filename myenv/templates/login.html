@@ -8,15 +8,19 @@
     <title>Login</title>
 </head>
 <body>
-    <h1>Login</h1>
-    {% if errorMessage != "" %}
-    <p>{{errorMessage}}</p>
-    {% endif %}
     <form method="POST" action="">
+        <a href="home"><div class="logo">
+            {%for i in range(0,title1_package[1])%}
+            <pre class="logo_line" style="{{style1[i]}}">{{title1_package[0][i]}}</pre>
+            {% endfor %}
+        </div></a>
         {{form1.hidden_tag()}}
-        {{form1.email}}
-        {{form1.password}}
-        {{form1.submit}}
+        {{form1.email(class="email input")}}
+        {{form1.password(class="password input")}}<br>
+        {% if errorMessage != "" %}
+        <p class="orange">{{errorMessage}}</p>
+        {% endif %}
+        {{form1.submit(class="submit")}}
     </form>
 </body>
 </html>

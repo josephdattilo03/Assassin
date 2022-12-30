@@ -4,20 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static',filename='register.css')}}">
     <title>Register</title>
 </head>
 <body>
-    <h1>Register</h1>
-    {% if errorMessage != "" %}
-    <p>{{errorMessage}}</p>
-    {% endif %}
+    <a href="home"><div class="logo">
+        {%for i in range(0,title1_package[1])%}
+        <pre class="logo_line" style="{{style1[i]}}">{{title1_package[0][i]}}</pre>
+        {% endfor %}
+    </div></a>
     <form method="POST">
         {{form.hidden_tag()}}
-        {{form.email}}
-        {{form.username}}
-        {{form.password}}
-        {{form.confirm_password}}
-        {{form.submit}}
+        {{form.email(class="input email")}}<br>
+        {{form.username(class="input username")}}<br>
+        {{form.password(class="input password")}}<br>
+        {{form.confirm_password(class="input confirm_password")}}<br>
+        {% if errorMessage != "" %}
+        <p class="orange">{{errorMessage}}</p>
+        {% endif %}
+        {{form.submit(class="submit")}}
     </form>
 </body>
 </html>
