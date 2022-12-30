@@ -1,6 +1,6 @@
 from flask import Flask, url_for, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, login_required, LoginManager, logout_user, current_user,login_user
+from flask_login import UserMixin, login_required, LoginManager, logout_user, current_user, login_user
 from flask_bcrypt import Bcrypt
 from forms import RegisterForm, LoginForm, GameForm
 from query import get_dashboard_data, get_target
@@ -20,11 +20,14 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-#Database model creation
-class User(db.Model,UserMixin):
+# Database model creation
+
+
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(40), nullable=False, unique=True)
@@ -33,8 +36,10 @@ class User(db.Model,UserMixin):
     games_in = db.Column(db.String)
     invite_queue = db.Column(db.String)
     loaded_game_id = db.Column(db.Integer)
+
     def __repr__(self):
         return "<Username %r" % self.id
+
 
 class Game(db.Model):
     __tablename__ = "games"
@@ -45,9 +50,10 @@ class Game(db.Model):
     description = db.Column(db.String)
     is_active = db.Column(db.Boolean, nullable=False)
     join_history = db.Column(db.String(40))
+
     def __repr__(self):
         return "<Name %r" % self.id
-        
+
 
 with app.app_context():
     db.create_all()
@@ -56,19 +62,23 @@ with app.app_context():
 @app.route('/')
 @app.route('/home')
 def home():
-    title1,style1 = get_title_animation()
-    return render_template("home.html",title1_package=[title1,len(title1)], style1=style1)
+    title1, style1 = get_title_animation()
+    return render_template("home.html", title1_package=[title1, len(title1)], style1=style1)
 
-#Presents a form for a user to register for an account and inserts data into the database
-@app.route('/register', methods=["GET","POST"])
-def register(): 
+# Presents a form for a user to register for an account and inserts data into the database
+
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
     form = RegisterForm()
     errorMessage = ""
     if form.validate_on_submit():
         if form.password.data == form.confirm_password.data:
             if form.validate_username_email(form.username, form.email, User):
-                hashed_password = bcrypt.generate_password_hash(password=form.password.data)
-                new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, games_in="", invite_queue="")
+                hashed_password = bcrypt.generate_password_hash(
+                    password=form.password.data)
+                new_user = User(username=form.username.data, email=form.email.data,
+                                password=hashed_password, games_in="", invite_queue="")
                 db.session.add(new_user)
                 db.session.commit()
                 return redirect(url_for("login"))
@@ -76,37 +86,42 @@ def register():
                 errorMessage = "Either username already exists or that email is already associated with an account"
         else:
             errorMessage = "Passwords do not match"
-    title1,style1 = get_title_animation()
-    return render_template("register.html", form=form, errorMessage=errorMessage, title1_package=[title1,len(title1)], style1=style1)
+    title1, style1 = get_title_animation()
+    return render_template("register.html", form=form, errorMessage=errorMessage, title1_package=[title1, len(title1)], style1=style1)
 
-#Compares inputted data to database data and gives user access to the service
+# Compares inputted data to database data and gives user access to the service
+
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    title1,style1 = get_title_animation()
+    title1, style1 = get_title_animation()
     form1 = LoginForm()
     errorMessage = ""
     if form1.validate_on_submit():
         user = User.query.filter_by(email=form1.email.data).first()
-        if user and bcrypt.check_password_hash(user.password,form1.password.data):
+        if user and bcrypt.check_password_hash(user.password, form1.password.data):
             login_user(user)
             return redirect(url_for('dashboard'))
         else:
             errorMessage = "Email or password is incorrect"
-    return render_template('login.html',form1=form1,errorMessage=errorMessage, title1_package=[title1, len(title1)], style1=style1)
+    return render_template('login.html', form1=form1, errorMessage=errorMessage, title1_package=[title1, len(title1)], style1=style1)
 
-#This is the main body of the application which presents frontend based on the user's interaction with the database
-@app.route("/dashboard", methods=["GET","POST"])
+# This is the main body of the application which presents frontend based on the user's interaction with the database
+
+
+@app.route("/dashboard", methods=["GET", "POST"])
 @login_required
 def dashboard():
     make_game = GameForm()
-    #Handles making a game... might change location later
+    # Handles making a game... might change location later
     if make_game.validate_on_submit():
-        game = Game.query.filter_by(owner=current_user.username,name=make_game.name.data).first()
+        game = Game.query.filter_by(
+            owner=current_user.username, name=make_game.name.data).first()
         if game:
             return redirect(url_for("dashboard"))
         else:
-            new_game = Game(name=make_game.name.data, owner=current_user.username, players_and_kills="0,"+current_user.username+",True", 
-            description=make_game.description.data, is_active=False, join_history=str(current_user.id))
+            new_game = Game(name=make_game.name.data, owner=current_user.username, players_and_kills="0,"+current_user.username+",True",
+                            description=make_game.description.data, is_active=False, join_history=str(current_user.id))
             db.session.add(new_game)
             db.session.commit()
             games_in_list = iq_string_to_list(current_user.games_in)
@@ -115,18 +130,23 @@ def dashboard():
             current_user.loaded_game_id = new_game.id
             db.session.commit()
             return redirect(url_for("dashboard"))
-    #Get all game data for frontend
-    user_owned_games,user_invited_games,other_games,loaded_game,leaderboard,target,in_game = get_dashboard_data(Game,current_user)
+    # Get all game data for frontend
+    user_owned_games, user_invited_games, other_games, loaded_game, leaderboard, target, in_game = get_dashboard_data(
+        Game, current_user)
     leaderboard.sort(reverse=True)
-    return render_template("dashboard.html", current_user=current_user, 
-    make_game=make_game, user_owned_games_package=[user_owned_games, len(user_owned_games)],
-    user_invite_package=[user_invited_games, len(user_invited_games)],
-    other_games_package=[other_games,len(other_games)], loaded_game=loaded_game, 
-    leaderboard_package=[leaderboard, len(leaderboard)], target=target,
-    in_game=in_game)
+    return render_template("dashboard.html", current_user=current_user,
+                           make_game=make_game, user_owned_games_package=[
+                               user_owned_games, len(user_owned_games)],
+                           user_invite_package=[
+                               user_invited_games, len(user_invited_games)],
+                           other_games_package=[other_games, len(other_games)], loaded_game=loaded_game,
+                           leaderboard_package=[leaderboard, len(leaderboard)], target=target,
+                           in_game=in_game)
 
-#When the user switches between games this route handles the database change
-@app.route("/switch", methods=["GET","POST"])
+# When the user switches between games this route handles the database change
+
+
+@app.route("/switch", methods=["GET", "POST"])
 @login_required
 def switch():
     user = User.query.filter_by(username=current_user.username).first()
@@ -135,21 +155,26 @@ def switch():
     db.session.commit()
     return redirect(url_for("dashboard"))
 
-#If the user is the owner of a game, they can invite players to that game which will direct them here
-@app.route("/invite", methods=["GET","POST"])
+# If the user is the owner of a game, they can invite players to that game which will direct them here
+
+
+@app.route("/invite", methods=["GET", "POST"])
 @login_required
 def invite():
     loaded_game = Game.query.filter_by(id=current_user.loaded_game_id).first()
     if loaded_game.owner == current_user.username:
-        user_to_invite = User.query.filter_by(username = request.form["foreign_username"]).first()
+        user_to_invite = User.query.filter_by(
+            username=request.form["foreign_username"]).first()
         if user_to_invite and user_to_invite.username != current_user.username:
-            loaded_game.players_and_kills += ":0," + request.form["foreign_username"] + ",False"
+            loaded_game.players_and_kills += ":0," + \
+                request.form["foreign_username"] + ",False"
             if user_to_invite.invite_queue == "":
                 user_to_invite.invite_queue += str(loaded_game.id)
             else:
                 user_to_invite.invite_queue += "," + str(loaded_game.id)
             db.session.commit()
     return redirect(url_for("dashboard"))
+
 
 @app.route("/leave")
 @login_required
@@ -162,7 +187,7 @@ def leave():
     curr_game_list.remove(str(current_user.loaded_game_id))
     if curr_game.owner == current_user.username:
         join_history = iq_string_to_list(curr_game.join_history)
-        for i in range(0,len(join_history)):
+        for i in range(0, len(join_history)):
             user = User.query.filter_by(id=join_history[i]).first()
             in_game_list = iq_string_to_list(user.games_in)
             in_game_list.remove(str(curr_game.id))
@@ -170,14 +195,14 @@ def leave():
             if user.loaded_game_id == curr_game.id:
                 user.loaded_game_id = None
         db.session.delete(curr_game)
-    current_user.games_in = iq_list_to_string(curr_game_list) 
+    current_user.games_in = iq_list_to_string(curr_game_list)
     current_user.loaded_game_id = None
     db.session.commit()
     return redirect(url_for("dashboard"))
 
 
-#When a user is invited to the game, accepting or declining this invite will be handled here
-@app.route("/acceptordecline", methods=["GET","POST"])
+# When a user is invited to the game, accepting or declining this invite will be handled here
+@app.route("/acceptordecline", methods=["GET", "POST"])
 @login_required
 def accept_or_decline():
     curr_game = Game.query.filter_by(id=list(request.form.values())[0]).first()
@@ -211,37 +236,39 @@ def accept_or_decline():
         db.session.commit()
     return redirect(url_for("dashboard"))
 
+
 @app.route("/start")
 @login_required
 def start():
     curr_game = Game.query.filter_by(id=current_user.loaded_game_id).first()
-    #Shuffle the players and kills list
+    # Shuffle the players and kills list
     pak_list = pak_string_to_list(curr_game.players_and_kills)
     shuffled_pak_list = []
-    for i in range(0,len(pak_list)):
+    for i in range(0, len(pak_list)):
         curr_element = random.choice(pak_list)
         if curr_element[2] == "True":
             shuffled_pak_list.append(curr_element)
         pak_list.remove(curr_element)
     if len(shuffled_pak_list) >= 4:
         curr_game.players_and_kills = pak_list_to_string(shuffled_pak_list)
-        #Activate game
+        # Activate game
         curr_game.is_active = True
         db.session.commit()
     return redirect(url_for("dashboard"))
+
 
 @app.route("/eliminate")
 @login_required
 def eliminate():
     curr_game = Game.query.filter_by(id=current_user.loaded_game_id).first()
     target = get_target(curr_game, current_user)
-    #Remove the player from the game in the database and from the client game list
+    # Remove the player from the game in the database and from the client game list
     pak_list = pak_string_to_list(curr_game.players_and_kills)
-    for i in range(0,len(pak_list)):
+    for i in range(0, len(pak_list)):
         if pak_list[i][1] == target:
             pak_list.pop(i)
             break
-    for i in range(0,len(pak_list)):
+    for i in range(0, len(pak_list)):
         if pak_list[i][1] == current_user.username:
             pak_list[i][0] = str(int(pak_list[i][0]) + 1)
             break
@@ -249,12 +276,15 @@ def eliminate():
     db.session.commit()
     return redirect(url_for("dashboard"))
 
-#Logs the user out of the service and returns them to the home screen
+# Logs the user out of the service and returns them to the home screen
+
+
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("home"))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
