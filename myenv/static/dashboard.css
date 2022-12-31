@@ -276,3 +276,47 @@ body {
     border-color: red;
     color: red;
 }
+.leaderboard_title {
+    color:rgb(196, 160, 0);
+    text-align: left;
+    margin-left: 10px;
+    border-bottom: 2px solid rgb(196, 160, 0);
+    width: 49vw;
+}
+
+
+.player_in_leaderboard {
+    text-align: left;
+    width: 49vw;
+    margin-left: 10px;
+    font-size: 15px;
+    border-bottom: 2px solid rgb(51, 255, 51);
+    margin-bottom: -8px;
+}
+.player_in_leaderboard > span {
+    margin-left: 10px;
+}
+
+.status_bar {
+    margin-top: 25vh;
+}
+.status_title {
+    text-align: left;
+    margin-left: 10px;
+    border-bottom: 2px solid rgb(196, 160, 0);
+    width: 49vw;
+    color: rgb(196, 160, 0);
+}
+.target {
+    filter: blur(.3rem);
+}
+.target:hover {
+    filter: none;
+    transition: .3s ease-out;
+}
+
+.elimination_button {
+    font-size: 20px;
+    width: 50vw;
+    margin-left: -2px;
+}
