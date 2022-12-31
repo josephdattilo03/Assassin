@@ -7,7 +7,7 @@ html {
     background-color: rgb(26, 26, 26);
 }
 form {
-    margin-top: 90px;
+    margin-top: 120px;
     opacity: 0;
     animation-name: input_animation;
     animation-fill-mode: forwards;
@@ -93,6 +93,6 @@ a {
     }
     100% {
         opacity: 1;
-        margin-top: 100px;
+        margin-top: 130px;
     }
 }

@@ -61,6 +61,7 @@
 
     <div class="active_game_box">
         <h3 class="game_title">{{loaded_game.name}}</h3>
+        <p class="game_description">{{loaded_game.description}}</p>
         {% if loaded_game.is_active %}
         <h2 class="leaderboard_title">Leaderboard</h2>
         {% for i in range(0,leaderboard_package[1]) %}

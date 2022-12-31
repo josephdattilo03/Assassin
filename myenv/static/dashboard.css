@@ -231,6 +231,16 @@ body {
     background-color: rgb(196, 160, 0);
     margin-bottom: 10px;
 }
+.game_description {
+    padding-top: 4px;
+    color: white;
+    font-size: 12px;
+    margin: -10px;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: rgb(196, 160, 0);
+}
 
 .player {
     font-size: 20px;
@@ -258,7 +268,7 @@ body {
     height: 8vh;
     color: white;
     background-color: rgb(196, 160, 0);
-    margin-top: 39vh;
+    margin-top: 34vh;
     border-radius: 0px 0px 5px 5px;
 }
 
