@@ -134,6 +134,7 @@ def dashboard():
     user_owned_games, user_invited_games, other_games, loaded_game, leaderboard, target, in_game = get_dashboard_data(
         Game, current_user)
     leaderboard.sort(reverse=True)
+    title1,style1 = get_title_animation()
     return render_template("dashboard.html", current_user=current_user,
                            make_game=make_game, user_owned_games_package=[
                                user_owned_games, len(user_owned_games)],
@@ -141,7 +142,7 @@ def dashboard():
                                user_invited_games, len(user_invited_games)],
                            other_games_package=[other_games, len(other_games)], loaded_game=loaded_game,
                            leaderboard_package=[leaderboard, len(leaderboard)], target=target,
-                           in_game=in_game)
+                           in_game=in_game, title1_package=[title1,len(title1)], style1=style1)
 
 # When the user switches between games this route handles the database change
 

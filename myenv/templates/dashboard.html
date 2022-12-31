@@ -11,41 +11,56 @@
 </head>
 
 <body>
-    <div class="profile">{{profile_svg()}}</div>
-    <h1>Welcome {{current_user.username}}</h1>
-    <h2>Games</h2>
+    <div class="logo">
+        {%for i in range(0,title1_package[1])%}
+        <pre class="logo_line" style="{{style1[i]}}">{{title1_package[0][i]}}</pre>
+        {% endfor %}
+    </div>
+    <div class="profile">
+        <div class="profile_image">{{profile_svg()}}</div>
+    </div>
     <br>
-    <form class="user_invites" action="/acceptordecline" method="POST">
-        {% for i in range(0,user_invite_package[1]) %}
-        <button type="submit" name="accept" class="user_invite" value="{{user_invite_package[0][i].id}}">Invite:
-            {{user_invite_package[0][i].name}} (Owner - {{user_invite_package[0][i].owner}})</button>
-        <button type="submit" name="decline" class="user_invite"
-            value="{{user_invite_package[0][i].id}}">Decline</button>
-        <br>
-        {% endfor %}
-    </form>
-    <form class="user_owned_games" action="/switch" method="POST">
-        {% for i in range(0,user_owned_games_package[1]) %}
-        <button type="submit" name="button" class="user_owned_game"
-            value="{{user_owned_games_package[0][i].id}}">{{user_owned_games_package[0][i].name}} (Owner - You)</button>
-        <br>
-        {% endfor %}
-        {% for i in range(0,other_games_package[1]) %}
-        <button type="submit" name="button" class="other_game"
-            value="{{other_games_package[0][i].id}}">{{other_games_package[0][i].name}} (Owner -
-            {{other_games_package[0][i].owner}})</button>
-        {% endfor %}
-    </form>
-    <br>
-    <div>
+    <div class="game_box">
+        <form class="user_invites game" action="/acceptordecline" method="POST">
+            {% for i in range(0,user_invite_package[1]) %}
+            <button type="submit" name="accept" class="user_invite" value="{{user_invite_package[0][i].id}}">Invite:
+                {{user_invite_package[0][i].name}} (Owner - {{user_invite_package[0][i].owner}})</button>
+            <button type="submit" name="decline" class="user_decline"
+                value="{{user_invite_package[0][i].id}}">X</button>
+            <br>
+            {% endfor %}
+        </form>
+
+
+        <form class="user_owned_games game" action="/switch" method="POST">
+            {% for i in range(0,user_owned_games_package[1]) %}
+            <button type="submit" name="button" class="user_owned_game"
+                value="{{user_owned_games_package[0][i].id}}">{{user_owned_games_package[0][i].name}} (Owner - You)</button>
+            <br>
+            {% endfor %}
+            {% for i in range(0,other_games_package[1]) %}
+            <button type="submit" name="button" class="other_game"
+                value="{{other_games_package[0][i].id}}">{{other_games_package[0][i].name}} (Owner -
+                {{other_games_package[0][i].owner}})</button>
+            {% endfor %}
+        </form>
+
+    </div>
+
+    <div class="make_game_box">
         <form class="make_game_form" method="POST">
             {{make_game.hidden_tag()}}
-            {{make_game.name}}
+            {{make_game.name(class="input name")}}
             <br>
-            {{make_game.description}}
+            {{make_game.description(class="input description")}}
             <br>
-            {{make_game.submit}}
+            {{make_game.submit(class="submit")}}
         </form>
+    </div>
+<div>
+
+    <div class="active_game_box">
+        <h3 class="game_title">{{loaded_game.name}}</h3>
         {% if loaded_game.is_active %}
         <h2>Leaderboard</h2>
         {% for i in range(0,leaderboard_package[1]) %}
@@ -65,24 +80,25 @@
         {% endif %}
 
         {% endif %}
+
+
+
         {% if loaded_game and not loaded_game.is_active %}
-        <h3>{{loaded_game.name}}'s Roster</h3>
         {% for i in range(0, leaderboard_package[1]) %}
         <p class="player {{leaderboard_package[0][i][2]}}">{{leaderboard_package[0][i][1]}}</p>
         {% endfor %}
         {% if current_user.username == loaded_game.owner %}
         <form class="invite_form" action="/invite" method="POST">
-            <input type="text" name="foreign_username" placeholder="Username">
-            <button type="submit" name="button">Invite User</button>
+            <input type="text" name="foreign_username" class="input invite_user" placeholder="Username">
+            <button type="submit" name="button" class="submit invite_user_button">Invite User</button>
         </form>
         <form action="/start">
-            <button type="submit" name="start_game">Start Game</button>
+            <button type="submit" name="start_game" class="start_game_button">Start Game</button>
         </form>
         {% endif %}
         {% endif %}
     </div>
     <br>
-    <a href="logout"><input type="button" value="Logout"></a>
 
 </body>
 

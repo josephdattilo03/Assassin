@@ -1,16 +1,278 @@
-html{
-    font-family:"sans-serif";
+html {
+    font-family: "sans-serif";
+    color: rgb(51, 255, 51);
+    overflow: hidden;
 }
 
-.make_game_form {
-    display: inline-block;
+body {
+    background-color: rgb(26, 26, 26);
 }
+
+.profile {
+    position: absolute;
+    right: 5vw;
+    top: 5vh;
+}
+
+.profile>.profile_image {
+    width: 50px;
+    height: 50px;
+}
+
+.logo {
+    position: absolute;
+    left: 3vw;
+    top: 5vh;
+    font-size: .4vh;
+    line-height: 0;
+}
+
+.logo_line {
+    opacity: 0;
+    animation-name: title_animation;
+    animation-fill-mode: forwards;
+    animation-duration: .3s;
+}
+
+@keyframes title_animation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.game_box {
+    text-align: center;
+    border-radius: 5px;
+    border: 2px solid rgb(50, 50, 50);
+    margin-top: 14vh;
+    width: 40vw;
+    height: 55vh;
+    background-color: rgb(26, 26, 26);
+    transition: .3s ease-in;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.game_box::-webkit-scrollbar,
+.make_game_box::-webkit-scrollbar,
+.active_game_box::-webkit-scrollbar {
+    display: none;
+}
+
+.game_box:hover,
+.make_game_box:hover,
+.active_game_box:hover {
+    box-shadow: 1px 1px 3px rgb(50, 50, 50);
+    transition: .2s ease-in;
+}
+
 .user_owned_game {
-    color:darkcyan;
+    font-size: 15px;
+    width: 100%;
+    height: 5vh;
+    margin-bottom: .5vh;
+    background-color: rgb(26, 26, 26);
+    border: 2px solid darkcyan;
+    color: darkcyan;
+    border-radius: 10px;
 }
+
+.user_owned_game:hover {
+    background-color: darkcyan;
+    color: rgb(26, 26, 26);
+    transition: .1s ease-in;
+}
+
+
+.user_invites {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user_invite {
+    margin-right: 2.5px;
+    font-size: 15px;
+    width: 80%;
+    margin-bottom: .5vh;
+    background-color: rgb(26, 26, 26);
+    border: 2px solid rgb(196, 160, 0);
+    border-radius: 10px;
+    color: rgb(196, 160, 0);
+    margin-bottom: .5vh;
+}
+
+.user_invite:hover {
+    background-color: rgb(196, 160, 0);
+    color: rgb(26, 26, 26);
+    transition: .1s ease-in;
+}
+
+.user_decline {
+    margin-left: 2.5px;
+    width: 15%;
+    height: 40px;
+    background-color: rgb(26, 26, 26);
+    border: 2px solid red;
+    color: red;
+    border-radius: 10px;
+}
+
+.user_decline:hover {
+    background-color: red;
+    color: white;
+    transition: .1s ease-in;
+}
+
+
+.other_game {
+    width: 100%;
+    height: 5vh;
+    font-size: 15px;
+    border: 2px solid rgb(51, 255, 51);
+    color: rgb(51, 255, 51);
+    background-color: rgb(26, 26, 26);
+    border-radius: 10px;
+
+}
+
+.other_game:hover {
+    color: rgb(26, 26, 26);
+    background-color: rgb(51, 255, 51);
+    transition: .1s ease-in
+}
+
+.make_game_box {
+    border-radius: 5px;
+    position: absolute;
+    margin-top: 4px;
+    width: 40vw;
+    height: 20vh;
+    border: 2px solid rgb(50, 50, 50);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.input {
+    font-size: 20px;
+    border: 0;
+    width: 35vw;
+    margin-left: 1.7vw;
+    border-bottom: 2px solid;
+    background-color: rgb(26, 26, 26);
+    color: rgb(50, 50, 50);
+    outline: none;
+}
+
+
+.input::placeholder {
+    color: rgb(50, 50, 50);
+}
+
+.input:focus::placeholder {
+    transition: .3s ease-in;
+    color: rgb(51, 255, 51);
+}
+
+.input:focus {
+    color: rgb(51, 255, 51);
+    transition: .3s ease-in;
+}
+
+.submit {
+    font-size: 30px;
+    margin-top: 5px;
+    margin-left: 1.5vw;
+    width: 37vw;
+    border-radius: 20px / 20px;
+    background-color: rgb(26, 26, 26);
+    color: rgb(51, 255, 51);
+    border-color: rgb(51, 255, 51);
+}
+
+.submit:hover {
+    transition: .3s ease-in;
+    background-color: rgb(51, 255, 51);
+    color: rgb(26, 26, 26);
+}
+
+
+
+
+.active_game_box {
+    font-family: sans-serif;
+    position: absolute;
+    top: 10.8%;
+    right: 3%;
+    text-align: center;
+    border-radius: 5px;
+    border: 2px solid rgb(50, 50, 50);
+    margin-top: 7vh;
+    width: 52.3vw;
+    height: 77vh;
+    background-color: rgb(26, 26, 26);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.game_title {
+    font-weight: lighter;
+    padding-top: 5px;
+    padding-bottom: 7px;
+    font-size: 25px;
+    margin: 0;
+    width: 100%;
+    height: 4vh;
+    color: white;
+    background-color: rgb(196, 160, 0);
+    margin-bottom: 10px;
+}
+
+.player {
+    font-size: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 51.4vw;
+    height: 3vh;
+    border-radius: 5px;
+    border: 2px solid rgb(51, 255, 51);
+    padding-bottom: 1vh;
+    margin-bottom: -15px;
+}
+
+.invite_user {
+    width: 45vw;
+    margin-top: 60px;
+}
+
+.start_game_button {
+    border: 0;
+    font-weight: lighter;
+    font-size: 30px;
+    margin: 0;
+    width: 100%;
+    height: 8vh;
+    color: white;
+    background-color: rgb(196, 160, 0);
+    margin-top: 39vh;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.start_game_button:hover {
+    background-color: darkcyan;
+    color: rgb(50, 50, 50);
+    transition: .3s ease-in
+}
+
 .True {
-    color:greenyellow;
+    color: rgb(51, 255, 51);
 }
+
 .False {
+    border-color: red;
     color: red;
 }
