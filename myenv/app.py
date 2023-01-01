@@ -277,6 +277,20 @@ def eliminate():
     db.session.commit()
     return redirect(url_for("dashboard"))
 
+@app.route("/selfliminate")
+@login_required
+def selfliminate():
+    curr_game = Game.query.filter_by(id=current_user.loaded_game_id).first()
+    # Remove the player from the game in the database and from the client game list
+    pak_list = pak_string_to_list(curr_game.players_and_kills)
+    for i in range(0, len(pak_list)):
+        if pak_list[i][1] == current_user.username:
+            pak_list.pop(i)
+            break
+    curr_game.players_and_kills = pak_list_to_string(pak_list)
+    db.session.commit()
+    return redirect(url_for("dashboard"))
+
 # Logs the user out of the service and returns them to the home screen
 
 

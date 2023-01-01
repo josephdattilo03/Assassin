@@ -35,7 +35,8 @@
         <form class="user_owned_games game" action="/switch" method="POST">
             {% for i in range(0,user_owned_games_package[1]) %}
             <button type="submit" name="button" class="user_owned_game"
-                value="{{user_owned_games_package[0][i].id}}">{{user_owned_games_package[0][i].name}} (Owner - You)</button>
+                value="{{user_owned_games_package[0][i].id}}">{{user_owned_games_package[0][i].name}} (Owner -
+                You)</button>
             <br>
             {% endfor %}
             {% for i in range(0,other_games_package[1]) %}
@@ -57,50 +58,54 @@
             {{make_game.submit(class="submit")}}
         </form>
     </div>
-<div>
+    <div>
 
-    <div class="active_game_box">
-        <h3 class="game_title">{{loaded_game.name}}</h3>
-        <p class="game_description">{{loaded_game.description}}</p>
-        {% if loaded_game.is_active %}
-        <h2 class="leaderboard_title">Leaderboard</h2>
-        {% for i in range(0,leaderboard_package[1]) %}
-        <p class="player_in_leaderboard"><span class="leaderboard_text">Player: {{leaderboard_package[0][i][1]}} Kills: <span class="kill_number">{{leaderboard_package[0][i][0]}}</span></span></p>
-        {% endfor %}
-        {% if in_game %}
-        <div class="status_bar">
-            <h2 class="status_title">Status</h2>
-            <p class="target_announcement">Your target is: <span class="target">{{target}}</span></p>
-            <form action="/eliminate">
-                <button class="elimination_button submit" type="submit">I have eliminated my target</button>
+        <div class="active_game_box">
+            <h3 class="game_title">{{loaded_game.name}}</h3>
+            <p class="game_description">{{loaded_game.description}}</p>
+            {% if loaded_game.is_active %}
+            <h2 class="leaderboard_title">Leaderboard</h2>
+            {% for i in range(0,leaderboard_package[1]) %}
+            <p class="player_in_leaderboard"><span class="leaderboard_text">Player: {{leaderboard_package[0][i][1]}}
+                    Kills: <span class="kill_number">{{leaderboard_package[0][i][0]}}</span></span></p>
+            {% endfor %}
+            {% if in_game %}
+            <div class="status_bar">
+                <h2 class="status_title">Status</h2>
+                <p class="target_announcement">Your target is: <span class="target">{{target}}</span></p>
+                <form action="/eliminate">
+                    <button class="elimination_button submit" type="submit">I have eliminated my target</button>
+                </form>
+                <form action="/selfliminate">
+                    <button class="elimination_button submit" type="submit">I would like to opt-out</button>
+                </form>
+                {% else %}
+                <p class="target_announcement">You have been eliminated</p>
+                <form action="/leave">
+                    <button class="submit" type="submit">Leave Game</button>
+                </form>
+                {% endif %}
+            </div>
+            {% endif %}
+
+
+
+            {% if loaded_game and not loaded_game.is_active %}
+            {% for i in range(0, leaderboard_package[1]) %}
+            <p class="player {{leaderboard_package[0][i][2]}}">{{leaderboard_package[0][i][1]}}</p>
+            {% endfor %}
+            {% if current_user.username == loaded_game.owner %}
+            <form class="invite_form" action="/invite" method="POST">
+                <input type="text" name="foreign_username" class="input invite_user" placeholder="Username">
+                <button type="submit" name="button" class="submit invite_user_button">Invite User</button>
             </form>
-            {% else %}
-            <p class="target_announcement">You have been eliminated</p>
-            <form action="/leave">
-                <button class="submit" type="submit">Leave Game</button>
+            <form action="/start">
+                <button type="submit" name="start_game" class="start_game_button">Start Game</button>
             </form>
             {% endif %}
+            {% endif %}
         </div>
-        {% endif %}
-
-
-
-        {% if loaded_game and not loaded_game.is_active %}
-        {% for i in range(0, leaderboard_package[1]) %}
-        <p class="player {{leaderboard_package[0][i][2]}}">{{leaderboard_package[0][i][1]}}</p>
-        {% endfor %}
-        {% if current_user.username == loaded_game.owner %}
-        <form class="invite_form" action="/invite" method="POST">
-            <input type="text" name="foreign_username" class="input invite_user" placeholder="Username">
-            <button type="submit" name="button" class="submit invite_user_button">Invite User</button>
-        </form>
-        <form action="/start">
-            <button type="submit" name="start_game" class="start_game_button">Start Game</button>
-        </form>
-        {% endif %}
-        {% endif %}
-    </div>
-    <br>
+        <br>
 
 </body>
 
