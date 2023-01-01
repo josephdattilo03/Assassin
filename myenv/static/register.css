@@ -89,10 +89,9 @@ a {
 
 .have_account {
     opacity: 0;
-    width: 45vw; 
     animation-name: ebutton_animation;
     animation-fill-mode: forwards;
-    animation-duration: 1s;
+    animation-duration: .1s;
     animation-delay: .3s;
 }
 
