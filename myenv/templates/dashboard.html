@@ -17,49 +17,50 @@
         {% endfor %}
     </div>
     <div class="profile">
-        <div class="profile_image">{{profile_svg()}}</div>
+        <div class="profile_image "><a href="logout">{{profile_svg()}}</a></div>
     </div>
     <br>
-    <div class="game_box">
-        <form class="user_invites game" action="/acceptordecline" method="POST">
-            {% for i in range(0,user_invite_package[1]) %}
-            <button type="submit" name="accept" class="user_invite" value="{{user_invite_package[0][i].id}}">Invite:
-                {{user_invite_package[0][i].name}} (Owner - {{user_invite_package[0][i].owner}})</button>
-            <button type="submit" name="decline" class="user_decline"
-                value="{{user_invite_package[0][i].id}}">X</button>
-            <br>
-            {% endfor %}
-        </form>
+            <div class="align_left">
+                <div class="game_box">
+                    <form class="user_invites game" action="/acceptordecline" method="POST">
+                        {% for i in range(0,user_invite_package[1]) %}
+                        <button type="submit" name="accept" class="user_invite" value="{{user_invite_package[0][i].id}}">Invite:
+                            {{user_invite_package[0][i].name}} (Owner - {{user_invite_package[0][i].owner}})</button>
+                        <button type="submit" name="decline" class="user_decline"
+                            value="{{user_invite_package[0][i].id}}">X</button>
+                        <br>
+                        {% endfor %}
+                    </form>
 
 
-        <form class="user_owned_games game" action="/switch" method="POST">
-            {% for i in range(0,user_owned_games_package[1]) %}
-            <button type="submit" name="button" class="user_owned_game"
-                value="{{user_owned_games_package[0][i].id}}">{{user_owned_games_package[0][i].name}} (Owner -
-                You)</button>
-            <br>
-            {% endfor %}
-            {% for i in range(0,other_games_package[1]) %}
-            <button type="submit" name="button" class="other_game"
-                value="{{other_games_package[0][i].id}}">{{other_games_package[0][i].name}} (Owner -
-                {{other_games_package[0][i].owner}})</button>
-            {% endfor %}
-        </form>
+                    <form class="user_owned_games game" action="/switch" method="POST">
+                        {% for i in range(0,user_owned_games_package[1]) %}
+                        <button type="submit" name="button" class="user_owned_game"
+                            value="{{user_owned_games_package[0][i].id}}">{{user_owned_games_package[0][i].name}} (Owner -
+                            You)</button>
+                        <br>
+                        {% endfor %}
+                        {% for i in range(0,other_games_package[1]) %}
+                        <button type="submit" name="button" class="other_game"
+                            value="{{other_games_package[0][i].id}}">{{other_games_package[0][i].name}} (Owner -
+                            {{other_games_package[0][i].owner}})</button>
+                        {% endfor %}
+                    </form>
 
-    </div>
+                </div>
 
-    <div class="make_game_box">
-        <form class="make_game_form" method="POST">
-            {{make_game.hidden_tag()}}
-            {{make_game.name(class="input name")}}
-            <br>
-            {{make_game.description(class="input description")}}
-            <br>
-            {{make_game.submit(class="submit")}}
-        </form>
-    </div>
-    <div>
-
+                <div class="make_game_box">
+                    <form class="make_game_form" method="POST">
+                        {{make_game.hidden_tag()}}
+                        {{make_game.name(class="input name")}}
+                        <br>
+                        {{make_game.description(class="input description")}}
+                        <br>
+                        {{make_game.submit(class="submit")}}
+                    </form>
+                </div>
+                <div>
+            </div>
         <div class="active_game_box">
             <h3 class="game_title">{{loaded_game.name}}</h3>
             <p class="game_description">{{loaded_game.description}}</p>

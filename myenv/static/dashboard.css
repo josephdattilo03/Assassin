@@ -10,17 +10,18 @@ body {
 
 .profile {
     position: absolute;
-    right: 5vw;
+    right: 3vw;
     top: 5vh;
 }
 
 .profile>.profile_image {
-    width: 50px;
-    height: 50px;
+    width: 7vh;
+    height: 7vh;
     z-index: 1;
 }
 
 .logo {
+    padding-right: 3000px;
     position: absolute;
     left: 3vw;
     top: 5vh;
@@ -49,13 +50,17 @@ body {
     text-align: center;
     border-radius: 5px;
     border: 2px solid rgb(50, 50, 50);
-    margin-top: 14vh;
     width: 40vw;
-    height: 55vh;
+    height: 56.2vh;
     background-color: rgb(26, 26, 26);
     transition: .3s ease-in;
     overflow-y: scroll;
     overflow-x: hidden;
+}
+.align_left  {
+    position:absolute;
+    left: 3%;
+    top: 15vh
 }
 
 .game_box::-webkit-scrollbar,
@@ -75,6 +80,7 @@ body {
     font-size: 15px;
     width: 100%;
     height: 5vh;
+    min-height: 30px;
     margin-bottom: .5vh;
     background-color: rgb(26, 26, 26);
     border: 2px solid darkcyan;
@@ -96,6 +102,7 @@ body {
 }
 
 .user_invite {
+    min-height: 30px;
     margin-right: 2.5px;
     font-size: 15px;
     width: 80%;
@@ -114,6 +121,7 @@ body {
 }
 
 .user_decline {
+    min-height: 30px;
     margin-left: 2.5px;
     width: 15%;
     height: 40px;
@@ -131,6 +139,7 @@ body {
 
 
 .other_game {
+    min-height: 30px;
     width: 100%;
     height: 5vh;
     font-size: 15px;
@@ -207,12 +216,11 @@ body {
 .active_game_box {
     font-family: sans-serif;
     position: absolute;
-    top: 10.8%;
-    right: 3%;
+    top:0;
+    left: 42vw;
     text-align: center;
     border-radius: 5px;
     border: 2px solid rgb(50, 50, 50);
-    margin-top: 7vh;
     width: 52.3vw;
     height: 77vh;
     background-color: rgb(26, 26, 26);
@@ -249,7 +257,6 @@ body {
     margin-left: auto;
     margin-right: auto;
     width: 51.4vw;
-    height: 3vh;
     border-radius: 5px;
     border: 2px solid rgb(51, 255, 51);
     padding-bottom: 1vh;
@@ -262,6 +269,9 @@ body {
 }
 
 .start_game_button {
+    position: absolute;
+    left:0;
+    bottom: 0;
     border: 0;
     font-weight: lighter;
     font-size: 30px;
@@ -270,7 +280,7 @@ body {
     height: 8vh;
     color: white;
     background-color: rgb(196, 160, 0);
-    margin-top: 34vh;
+    margin-top: 30%;
     border-radius: 0px 0px 5px 5px;
 }
 
