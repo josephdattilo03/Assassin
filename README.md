@@ -20,7 +20,3 @@ Assassin is particularly popular on college campuses; several universities have 
 
 5.) Play the game - When you kill a player, you recieve their target. Continue this cycle until only one person remains.
 
-### What making this site taught me.
-1.) Connecting frontend and backend - This is my first experience creating a dynamic website. I had improved my skills at html and css, but this is the first time I have tied it together with a backend and frontend library.
-
-2.) The importance of having a plan and DRY - One of the biggest issues I had with this project was scalability. When I decided I wanted to add a new feature, I felt as though I could have organised better to make the integration process easier. Additionally, I only learned of some of the more in-depth features of jinja2 (frontend) later in the project, which caused a lot more difficuly creating new layouts.
