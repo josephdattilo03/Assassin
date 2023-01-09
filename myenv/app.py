@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, redirect, request
+from flask import Flask, url_for, render_template, redirect, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_required, LoginManager, logout_user, current_user, login_user
 from flask_bcrypt import Bcrypt
@@ -255,6 +255,8 @@ def start():
         # Activate game
         curr_game.is_active = True
         db.session.commit()
+    else:
+        flash("You need at least four players to start a game.")
     return redirect(url_for("dashboard"))
 
 

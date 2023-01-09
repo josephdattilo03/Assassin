@@ -53,7 +53,6 @@ body {
     width: 40vw;
     height: 56.2vh;
     background-color: rgb(26, 26, 26);
-    transition: .3s ease-in;
     overflow-y: scroll;
     overflow-x: hidden;
 }
