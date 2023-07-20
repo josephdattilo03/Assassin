@@ -1,4 +1,4 @@
-# Assassin (This site is still being constructed, so it may be buggy.)
+# Assassin
 
 ### A minimalist flask website that allows users to create and run their own Assassin games.
 
